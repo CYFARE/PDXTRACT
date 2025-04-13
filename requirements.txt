@@ -1,0 +1,4 @@
+PyMuPDF
+Pillow
+ollama
+tqdm

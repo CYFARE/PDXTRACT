@@ -1,0 +1,9 @@
+{
+  "provider": "ollama",
+  "model": "llama3.2-vision",
+  "ollama_url": "http://127.0.0.1:11434",
+  "prompt": "Extract all emails found on the page. List each email address on a new line and only provide the email address without any text or explanations. Only emails. If there are no emails found, only output 'NO EMAIL' exactly.",
+  "input_folder": "./pdfs",
+  "output_file": "output/ollama_extracted_data.json",
+  "max_workers": 4
+}
