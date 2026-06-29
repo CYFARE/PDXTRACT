@@ -1,9 +1,24 @@
 {
   "provider": "ollama",
   "model": "llama3.2-vision",
+  "strategy": "ocr_regex",
+  "extractors": ["email"],
+  "custom_regex": {},
+  "prompt": "Transcribe all text visible in this image. Output only the raw text, no explanations.",
   "ollama_url": "http://127.0.0.1:11434",
-  "prompt": "Extract all emails found on the page. List each email address on a new line and only provide the email address without any text or explanations. Only emails. If there are no emails found, only output 'NO EMAIL' exactly.",
+  "llama_cpp_url": "http://127.0.0.1:8080",
   "input_folder": "./pdfs",
-  "output_file": "output/ollama_extracted_data.json",
-  "max_workers": 4
+  "output_file": "output/extracted_data.json",
+  "output_csv": null,
+  "output_txt": null,
+  "session_file": "aiocr_session.log",
+  "temp_suffix": ".jsonl.tmp",
+  "max_workers": 4,
+  "page_dpi": 200,
+  "use_embedded_text": true,
+  "include_ocr_text": false,
+  "got_ocr_device": "auto",
+  "got_ocr_dtype": "auto",
+  "retries": 2,
+  "retry_delay_seconds": 3.0
 }

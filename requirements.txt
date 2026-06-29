@@ -1,4 +1,11 @@
-PyMuPDF
-Pillow
-ollama
-tqdm
+# Base dependencies for PDXTRACT (lightweight install)
+PyMuPDF>=1.24.0
+Pillow>=10.0.0
+ollama>=0.3.0
+requests>=2.31.0
+pydantic>=2.0.0
+rich>=13.0.0
+tqdm>=4.66.0
+
+# Optional: native GOT-OCR 2.0 support
+# Install with: pip install -r requirements-got.txt

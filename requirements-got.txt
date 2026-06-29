@@ -1,0 +1,13 @@
+# Additional dependencies for native GOT-OCR 2.0 inference
+-r requirements.txt
+
+torch>=2.0.0
+transformers>=4.45.0
+accelerate>=0.30.0
+sentencepiece>=0.2.0
+protobuf>=3.20.0
+
+# flash-attn is OPTIONAL and only needed for maximum speed on CUDA.
+# On systems without a compiler/CUDA, omit it; the model will fall back
+# to eager/sdpa attention.
+# flash-attn>=2.5.0
