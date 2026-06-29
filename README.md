@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://github.com/CYFARE/PDXTRACT/blob/main/assets/PDXTRACT.png" alt="PDXTRACT Logo">
+  <img src="https://github.com/CYFARE/PDXTRACT/blob/main/assets/PDXTRACT.jpeg" alt="PDXTRACT Logo">
 </h1>
 
 <h2 align="center">
