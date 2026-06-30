@@ -51,7 +51,7 @@ python -m pip install -r requirements-got.txt
 python xtract.py
 ```
 
-> Native GOT-OCR 2.0 automatically falls back to eager attention on systems without `flash-attn`.
+> Native GOT-OCR 2.0 automatically falls back to eager attention on systems without `flash-attn`. See the GPU/CUDA setup section below for NVIDIA GPU instructions.
 
 ### Run with llama.cpp server
 
@@ -60,6 +60,25 @@ llama-server -hf ggml-org/GLM-OCR-GGUF
 # edit config.json: provider = "llama_cpp", model = "ggml-org/GLM-OCR-GGUF"
 python xtract.py
 ```
+
+## GPU / CUDA setup (important for native GOT-OCR 2.0)
+
+The default `torch` wheel from PyPI is **CPU-only**. If you have an NVIDIA GPU, install CUDA-enabled PyTorch **before** running native GOT-OCR 2.0:
+
+```bash
+source venv/bin/activate
+pip uninstall -y torch torchvision
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+```
+
+Verify the GPU is visible:
+
+```bash
+python -c "import torch; print(torch.cuda.is_available())"
+# Expected: True
+```
+
+If you see `Found no NVIDIA driver on your system` while running GOT-OCR 2.0, the above step is what you missed.
 
 ## Usage
 
@@ -77,6 +96,9 @@ python xtract.py process --help
 **Native GOT-OCR 2.0 (recommended for speed/accuracy)**
 
 ```bash
+# If you have an NVIDIA GPU, install CUDA torch first (see GPU/CUDA setup above)
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+
 pip install -r requirements-got.txt
 python xtract.py --provider got_ocr20_native --model stepfun-ai/GOT-OCR2_0 --strategy ocr_regex --extractors email
 ```
