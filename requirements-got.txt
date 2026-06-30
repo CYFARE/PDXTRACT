@@ -2,12 +2,15 @@
 -r requirements.txt
 
 torch>=2.0.0
-transformers>=4.45.0
-accelerate>=0.30.0
+torchvision>=0.15.0
+transformers>=4.37.0
+accelerate>=0.28.0
 sentencepiece>=0.2.0
 protobuf>=3.20.0
+tiktoken>=0.6.0
+verovio>=4.3.0
 
 # flash-attn is OPTIONAL and only needed for maximum speed on CUDA.
 # On systems without a compiler/CUDA, omit it; the model will fall back
-# to eager/sdpa attention.
+# to the default attention implementation.
 # flash-attn>=2.5.0

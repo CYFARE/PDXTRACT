@@ -65,6 +65,13 @@ def build_arg_parser() -> argparse.ArgumentParser:
     process_parser.add_argument("--max-workers", dest="max_workers", type=int, help="Concurrency")
     process_parser.add_argument("--page-dpi", dest="page_dpi", type=int, help="Rendering DPI")
     process_parser.add_argument(
+        "--use-embedded-text",
+        dest="use_embedded_text",
+        action="store_true",
+        default=None,
+        help="Try embedded text before OCR in hybrid mode",
+    )
+    process_parser.add_argument(
         "--include-ocr-text",
         dest="include_ocr_text",
         action="store_true",
@@ -98,25 +105,27 @@ def apply_cli_overrides(config: Config, args: argparse.Namespace) -> Config:
     """Override config values with CLI arguments."""
     data = config.model_dump()
     overrides = {
-        "provider": args.provider,
-        "model": args.model,
-        "strategy": args.strategy,
-        "ollama_url": args.ollama_url,
-        "llama_cpp_url": args.llama_cpp_url,
-        "input_folder": args.input_folder,
-        "output_file": args.output_file,
-        "output_csv": args.output_csv,
-        "output_txt": args.output_txt,
-        "session_file": args.session_file,
-        "max_workers": args.max_workers,
-        "page_dpi": args.page_dpi,
-        "include_ocr_text": args.include_ocr_text,
+        "provider": getattr(args, "provider", None),
+        "model": getattr(args, "model", None),
+        "strategy": getattr(args, "strategy", None),
+        "ollama_url": getattr(args, "ollama_url", None),
+        "llama_cpp_url": getattr(args, "llama_cpp_url", None),
+        "input_folder": getattr(args, "input_folder", None),
+        "output_file": getattr(args, "output_file", None),
+        "output_csv": getattr(args, "output_csv", None),
+        "output_txt": getattr(args, "output_txt", None),
+        "session_file": getattr(args, "session_file", None),
+        "max_workers": getattr(args, "max_workers", None),
+        "page_dpi": getattr(args, "page_dpi", None),
+        "use_embedded_text": getattr(args, "use_embedded_text", None),
+        "include_ocr_text": getattr(args, "include_ocr_text", None),
     }
     for key, value in overrides.items():
         if value is not None:
             data[key] = value
 
-    if args.extractors:
+    extractors = getattr(args, "extractors", None)
+    if extractors:
         data["extractors"] = [e.strip() for e in args.extractors.split(",") if e.strip()]
 
     return Config.model_validate(data)
@@ -302,7 +311,7 @@ def main(argv: list[str] | None = None) -> int:
         argv = sys.argv[1:]
 
     # Allow top-level flags without requiring the 'process' subcommand.
-    if argv and argv[0] not in ("process", "list-models", "--help", "-h"):
+    if not argv or argv[0] not in ("process", "list-models", "--help", "-h"):
         argv.insert(0, "process")
 
     args = parser.parse_args(argv)

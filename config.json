@@ -1,6 +1,6 @@
 {
-  "provider": "ollama",
-  "model": "llama3.2-vision",
+  "provider": "got_ocr20_native",
+  "model": "stepfun-ai/GOT-OCR2_0",
   "strategy": "ocr_regex",
   "extractors": ["email"],
   "custom_regex": {},

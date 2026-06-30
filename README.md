@@ -64,18 +64,86 @@ python xtract.py
 ## Usage
 
 ```bash
-# Process PDFs (uses config.json)
+# Process PDFs using values from config.json
 python xtract.py
-
-# Override provider/model on the fly
-python xtract.py process --provider ollama --model llama3.2-vision --max-workers 2
-
-# List available models
-python xtract.py list-models
 
 # Help
 python xtract.py --help
 python xtract.py process --help
+```
+
+### Example commands
+
+**Native GOT-OCR 2.0 (recommended for speed/accuracy)**
+
+```bash
+pip install -r requirements-got.txt
+python xtract.py --provider got_ocr20_native --model stepfun-ai/GOT-OCR2_0 --strategy ocr_regex --extractors email
+```
+
+**Ollama with a vision model**
+
+```bash
+ollama pull llama3.2-vision
+ollama serve
+python xtract.py --provider ollama --model llama3.2-vision --max-workers 2
+```
+
+**llama.cpp server with an OCR GGUF**
+
+```bash
+llama-server -hf ggml-org/GLM-OCR-GGUF
+python xtract.py --provider llama_cpp --model ggml-org/GLM-OCR-GGUF --llama-cpp-url http://127.0.0.1:8080
+```
+
+**Hybrid mode (fast for text-based PDFs)**
+
+```bash
+python xtract.py --strategy hybrid --use-embedded-text --extractors email,phone,url
+```
+
+**Multiple extractors + custom regex + CSV/TXT output**
+
+```bash
+python xtract.py \
+  --extractors email,phone,url,custom_case \
+  --output-file output/extracted.json \
+  --output-csv output/extracted.csv \
+  --output-txt output/emails.txt
+```
+
+With this in `config.json`:
+
+```json
+{
+  "custom_regex": {
+    "custom_case": "Case\\s+#?\\s*(\\d{4}-\\d{4})"
+  }
+}
+```
+
+**List models for a backend**
+
+```bash
+python xtract.py list-models
+python xtract.py list-models --provider llama_cpp --llama-cpp-url http://127.0.0.1:8080
+python xtract.py list-models --provider ollama --ollama-url http://127.0.0.1:11434
+```
+
+**Control resume/session**
+
+```bash
+# Reprocess everything, ignore previous session
+python xtract.py --no-resume
+
+# Keep the incremental JSONL temp file for debugging
+python xtract.py --keep-temp
+```
+
+**Include raw OCR text in the final JSON**
+
+```bash
+python xtract.py --include-ocr-text
 ```
 
 ## Configuration
